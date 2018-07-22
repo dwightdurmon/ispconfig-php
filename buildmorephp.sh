@@ -74,7 +74,7 @@ After=network.target
 Type=simple
 PIDFile=/opt/php-${php71}/var/run/php-fpm.pid
 ExecStart=/opt/php-${php71}/sbin/php-fpm --nodaemonize --fpm-config /opt/php-${php71}/etc/php-fpm.conf
-ExecReload=/bin/kill -USR2 $MAINPID
+ExecReload=/bin/kill -USR2 \$MAINPID
 
 [Install]
 WantedBy=multi-user.target
@@ -196,7 +196,7 @@ After=network.target
 Type=simple
 PIDFile=/opt/php-${php72}/var/run/php-fpm.pid
 ExecStart=/opt/php-${php72}/sbin/php-fpm --nodaemonize --fpm-config /opt/php-${php72}/etc/php-fpm.conf
-ExecReload=/bin/kill -USR2 $MAINPID
+ExecReload=/bin/kill -USR2 \$MAINPID
 
 [Install]
 WantedBy=multi-user.target
@@ -287,7 +287,15 @@ if [[ "$php56" != "" ]]; then
     ln -s /opt/openssl/lib/libssl.so.1.0.0 /usr/lib/x86_64-linux-gnu/
     ln -fs /opt/openssl /usr/local/ssl
     cd /usr/local/src/php${php56}-build/php-${php56}/
-    ./configure --prefix=/opt/php-${php56} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt --with-zlib --with-pgsql --disable-rpath --enable-inline-optimization --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl=/opt/openssl --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp --with-kerberos --with-gettext --with-xmlrpc --with-xsl --enable-opcache --enable-fpm
+    ./configure --prefix=/opt/php-${php56} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir \
+    --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl \
+    --with-mcrypt --with-zlib --with-pgsql --disable-rpath --enable-inline-optimization \
+    --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl \
+    --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip \
+    --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
+    --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl=/opt/openssl \
+    --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp \
+    --with-kerberos --with-gettext --with-xmlrpc --with-xsl --enable-opcache --enable-fpm
     make
     make install
 
@@ -321,13 +329,13 @@ After=network.target
 Type=simple
 PIDFile=/opt/php-${php56}/var/run/php-fpm.pid
 ExecStart=/opt/php-${php56}/sbin/php-fpm --nodaemonize --fpm-config /opt/php-${php56}/etc/php-fpm.conf
-ExecReload=/bin/kill -USR2 $MAINPID
+ExecReload=/bin/kill -USR2 \$MAINPID
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-    echo "Please check the service file: /lib/systemd/system/php-${php72}-fpm.service"
+    echo "Please check the service file: /lib/systemd/system/php-${php56}-fpm.service"
     read -p "Press Enter to continue"
     vi /lib/systemd/system/php-${php56}-fpm.service
 
@@ -366,7 +374,7 @@ EOF
     echo "-> PHP-FPM Settings tab"
     echo "Path to the PHP-FPM init script: php-${php56}-fpm"
     echo "Path to the php.ini directory: /opt/php-${php56}/lib"
-    echo "Path to the PHP-FPM pool directory: /opt/php-${php56}1/etc/php-fpm.d"
+    echo "Path to the PHP-FPM pool directory: /opt/php-${php56}/etc/php-fpm.d"
 fi
 read -p "Press Enter to finish"
 
